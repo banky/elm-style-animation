@@ -7,8 +7,7 @@ module Animation exposing
     , viewBox, fill, stroke, strokeWidth, stopColor, offset, x, y, cx, cy, radius, radiusX, radiusY, points
     , path, PathStep, move, moveTo, line, lineTo, horizontal, horizontalTo, vertical, verticalTo, close, QuadraticCurve, curve, curveTo, CubicCurve, curve2, curve2To, arc, Arc
     , px, percent, em, rem, turn, deg, grad, rad
-    , exactly, custom, custom2, customColor, attr, attr2, attr3, attr4, attrColor
-    , isRunning
+    , exactly, custom, custom2, customColor, attr, attr2, attr3, attr4, attrColor, isRunning
     )
 
 {-| A library for animations.
@@ -56,7 +55,7 @@ module Animation exposing
 
 # Advanced
 
-@docs exactly, custom, custom2, customColor, attr, attr2, attr3, attr4, attrColor
+@docs exactly, custom, custom2, customColor, attr, attr2, attr3, attr4, attrColor, isRunning
 
 -}
 
@@ -385,6 +384,8 @@ subscription msg states =
         Sub.none
 
 
+{-| Check if the Animation is currently running
+-}
 isRunning : Animation msg -> Bool
 isRunning (Animation model) =
     model.running
