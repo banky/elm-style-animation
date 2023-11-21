@@ -1,6 +1,6 @@
 module Animation exposing
     ( State, subscription, Msg, render, renderPairs
-    , interrupt, queue, Step, wait, to, toWith, toWithEach, set, repeat, loop, update, style, styleWith, styleWithEach, Interpolation, spring, easing, speed
+    , interrupt, queue, Step, wait, to, toWith, toWithEach, set, clear, repeat, loop, update, style, styleWith, styleWithEach, Interpolation, spring, easing, speed
     , Property, opacity, Length, top, left, right, bottom, width, height, padding, paddingLeft, paddingRight, paddingTop, paddingBottom, margin, marginLeft, marginRight, marginTop, marginBottom, Color, color, backgroundColor, borderColor, borderWidth, borderLeftWidth, borderRightWidth, borderTopWidth, borderBottomWidth, borderRadius, borderTopLeftRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius, shadow, textShadow, insetShadow, display, inline, inlineBlock, flex, inlineFlex, block, none, listItem
     , scale, scale3d, Angle, rotate, rotate3d, translate, translate3d, transformOrigin
     , filterUrl, blur, brightness, contrast, grayscale, greyscale, hueRotate, invert, saturate, sepia, dropShadow
@@ -20,7 +20,7 @@ module Animation exposing
 
 # Creating an animation
 
-@docs interrupt, queue, Step, wait, to, toWith, toWithEach, set, repeat, loop, update, style, styleWith, styleWithEach, Interpolation, spring, easing, speed
+@docs interrupt, queue, Step, wait, to, toWith, toWithEach, set, clear, repeat, loop, update, style, styleWith, styleWithEach, Interpolation, spring, easing, speed
 
 
 # Animatable Properties
@@ -263,6 +263,13 @@ toWithEach interpProps =
 set : List Animation.Model.Property -> Animation.Model.Step msg
 set props =
     Set props
+
+
+{-| Immediately clear properties.
+-}
+clear : Animation.Model.Step msg
+clear =
+    Clear
 
 
 {-| Repeat a number of steps `n` times.

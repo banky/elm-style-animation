@@ -30,6 +30,7 @@ type Step msg
     | To (List Property)
     | ToWith (List Property)
     | Set (List Property)
+    | Clear
     | Wait Time.Posix
     | Send msg
     | Repeat Int (List (Step msg))
@@ -504,6 +505,7 @@ refreshTiming now timing =
     , dt =
         if dt > 34 || Time.posixToMillis timing.current == 0 then
             Time.millisToPosix (round 16.666)
+
         else
             Time.millisToPosix dt
     }
@@ -520,6 +522,7 @@ resolveSteps currentStyle steps dt =
                 Wait n ->
                     if Time.posixToMillis n <= 0 then
                         resolveSteps currentStyle (List.drop 1 steps) dt
+
                     else
                         -- What about a slight overage of time?
                         ( currentStyle, [], (Wait <| Time.millisToPosix (Time.posixToMillis n - Time.posixToMillis dt)) :: List.drop 1 steps )
@@ -539,6 +542,7 @@ resolveSteps currentStyle steps dt =
                         , []
                         , List.drop 1 steps
                         )
+
                     else
                         resolveSteps
                             (startTowards False currentStyle target)
@@ -551,6 +555,7 @@ resolveSteps currentStyle steps dt =
                         , []
                         , List.drop 1 steps
                         )
+
                     else
                         -- Add starting time to any properties with duration/easing
                         -- The boolean is to override interpolation or not
@@ -565,6 +570,12 @@ resolveSteps currentStyle steps dt =
                         (List.drop 1 steps)
                         dt
 
+                Clear ->
+                    ( []
+                    , []
+                    , []
+                    )
+
                 Step ->
                     let
                         stepped =
@@ -575,6 +586,7 @@ resolveSteps currentStyle steps dt =
                         , []
                         , List.drop 1 steps
                         )
+
                     else
                         ( stepped
                         , []
@@ -590,6 +602,7 @@ resolveSteps currentStyle steps dt =
                 Repeat n substeps ->
                     if n <= 0 then
                         resolveSteps currentStyle (List.drop 1 steps) dt
+
                     else
                         resolveSteps
                             currentStyle
@@ -806,6 +819,7 @@ setTarget overrideInterpolation current newTarget =
                         { motion
                             | interpolationOverride = Just targetMotion.interpolation
                         }
+
                     else
                         motion
             in
@@ -1566,6 +1580,7 @@ stepInterpolation posix motion =
                         ( new
                         , new >= motion.target
                         )
+
                     else
                         let
                             new =
@@ -1580,6 +1595,7 @@ stepInterpolation posix motion =
                     | position = motion.target
                     , velocity = 0.0
                 }
+
             else
                 { motion
                     | position = newPos
@@ -1614,6 +1630,7 @@ stepInterpolation posix motion =
                     | position = motion.target
                     , velocity = 0.0
                 }
+
             else
                 { motion
                     | position = newPos
@@ -1629,6 +1646,7 @@ stepInterpolation posix motion =
                 newProgress =
                     if (dtms / durationMs) + progress < 1 then
                         (dtms / durationMs) + progress
+
                     else
                         1
 
@@ -1645,6 +1663,7 @@ stepInterpolation posix motion =
                 newVelocity =
                     if newProgress == 1 then
                         0
+
                     else
                         (newPos - motion.position) / dtms
             in
@@ -1695,6 +1714,7 @@ matchPoints points1 points2 =
                 ( points1
                 , points2 ++ List.repeat (abs diff) last2
                 )
+
     else if diff < 0 then
         case List.head <| List.reverse points1 of
             Nothing ->
@@ -1704,5 +1724,6 @@ matchPoints points1 points2 =
                 ( points1 ++ List.repeat (abs diff) last1
                 , points2
                 )
+
     else
         ( points1, points2 )
