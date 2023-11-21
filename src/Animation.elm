@@ -1,142 +1,15 @@
-module Animation
-    exposing
-        ( Angle
-        , Arc
-        , Color
-        , CubicCurve
-        , Interpolation
-        , Length
-        , Msg
-        , PathStep
-        , Property
-        , QuadraticCurve
-        , State
-        , Step
-        , arc
-        , attr
-        , attr2
-        , attr3
-        , attr4
-        , attrColor
-        , backgroundColor
-        , block
-        , blur
-        , borderBottomLeftRadius
-        , borderBottomRightRadius
-        , borderBottomWidth
-        , borderColor
-        , borderLeftWidth
-        , borderRadius
-        , borderRightWidth
-        , borderTopLeftRadius
-        , borderTopRightRadius
-        , borderTopWidth
-        , borderWidth
-        , bottom
-        , brightness
-        , close
-        , color
-        , contrast
-        , curve
-        , curve2
-        , curve2To
-        , curveTo
-        , custom
-        , custom2
-        , customColor
-        , cx
-        , cy
-        , deg
-        , display
-        , dropShadow
-        , easing
-        , em
-        , exactly
-        , fill
-        , filterUrl
-        , flex
-        , grad
-        , grayscale
-        , greyscale
-        , height
-        , horizontal
-        , horizontalTo
-        , hueRotate
-        , inline
-        , inlineBlock
-        , inlineFlex
-        , insetShadow
-        , interrupt
-        , invert
-        , left
-        , line
-        , lineTo
-        , listItem
-        , loop
-        , margin
-        , marginBottom
-        , marginLeft
-        , marginRight
-        , marginTop
-        , move
-        , moveTo
-        , none
-        , offset
-        , opacity
-        , padding
-        , paddingBottom
-        , paddingLeft
-        , paddingRight
-        , paddingTop
-        , path
-        , percent
-        , points
-        , px
-        , queue
-        , rad
-        , radius
-        , radiusX
-        , radiusY
-        , rem
-        , render
-        , renderPairs
-        , repeat
-        , right
-        , rotate
-        , rotate3d
-        , saturate
-        , scale
-        , scale3d
-        , sepia
-        , set
-        , shadow
-        , speed
-        , spring
-        , stopColor
-        , stroke
-        , strokeWidth
-        , style
-        , styleWith
-        , styleWithEach
-        , subscription
-        , textShadow
-        , to
-        , toWith
-        , toWithEach
-        , top
-        , transformOrigin
-        , translate
-        , translate3d
-        , turn
-        , update
-        , vertical
-        , verticalTo
-        , viewBox
-        , wait
-        , width
-        , x
-        , y
-        )
+module Animation exposing
+    ( State, subscription, Msg, render, renderPairs
+    , interrupt, queue, Step, wait, to, toWith, toWithEach, set, repeat, loop, update, style, styleWith, styleWithEach, Interpolation, spring, easing, speed
+    , Property, opacity, Length, top, left, right, bottom, width, height, padding, paddingLeft, paddingRight, paddingTop, paddingBottom, margin, marginLeft, marginRight, marginTop, marginBottom, Color, color, backgroundColor, borderColor, borderWidth, borderLeftWidth, borderRightWidth, borderTopWidth, borderBottomWidth, borderRadius, borderTopLeftRadius, borderTopRightRadius, borderBottomLeftRadius, borderBottomRightRadius, shadow, textShadow, insetShadow, display, inline, inlineBlock, flex, inlineFlex, block, none, listItem
+    , scale, scale3d, Angle, rotate, rotate3d, translate, translate3d, transformOrigin
+    , filterUrl, blur, brightness, contrast, grayscale, greyscale, hueRotate, invert, saturate, sepia, dropShadow
+    , viewBox, fill, stroke, strokeWidth, stopColor, offset, x, y, cx, cy, radius, radiusX, radiusY, points
+    , path, PathStep, move, moveTo, line, lineTo, horizontal, horizontalTo, vertical, verticalTo, close, QuadraticCurve, curve, curveTo, CubicCurve, curve2, curve2To, arc, Arc
+    , px, percent, em, rem, turn, deg, grad, rad
+    , exactly, custom, custom2, customColor, attr, attr2, attr3, attr4, attrColor
+    , isRunning
+    )
 
 {-| A library for animations.
 
@@ -322,6 +195,7 @@ defaultInterpolationByProperty prop =
         Animation.Model.Property3 name _ _ _ ->
             if name == "rotate3d" then
                 speed { perSecond = pi }
+
             else
                 defaultSpring
 
@@ -506,6 +380,7 @@ subscription : (Msg -> msgB) -> List (Animation msgA) -> Sub msgB
 subscription msg states =
     if List.any isRunning states then
         Sub.map msg (Browser.Events.onAnimationFrame Tick)
+
     else
         Sub.none
 
@@ -539,6 +414,7 @@ debug (Animation model) =
                         name =
                             if inset then
                                 propName ++ "-inset"
+
                             else
                                 propName
                     in
@@ -1557,6 +1433,7 @@ arc myArc =
             , startAngle = initMotion myArc.startAngle ""
             , endAngle = initMotion myArc.endAngle ""
             }
+
     else
         AntiClockwiseArc
             { x = initMotion myArc.x ""
@@ -1738,6 +1615,7 @@ alignStartingPoint pnts =
                                 (\i val ->
                                     if val == min then
                                         Just i
+
                                     else
                                         Nothing
                                 )
